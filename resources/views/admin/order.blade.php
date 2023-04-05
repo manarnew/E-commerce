@@ -48,12 +48,6 @@
                       <td>{{ $data->payment_status }}</td>
                       <td>{{ $data->delivery_status }}</td>
                       <td ><img width="250px" height="500px"  src="/product/{{ $data->image }}" alt="" class="rounded mx-auto d-block"></td>
-                      <td>
-                      <a onclick="return confirm('Are You Sure To Delete This')" href="{{ url('delete_product',$data->id) }}"class="btn btn-danger">Delete</a>
-                      </td>
-                       <td>
-                      <a  href="{{ url('update_product',$data->id) }}"class="btn btn-success">Edit</a>
-                      </td>
                     </tr>
                     @endforeach
                   </tbody>
