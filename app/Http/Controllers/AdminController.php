@@ -11,7 +11,7 @@ class AdminController extends Controller
         $data=Category::all();
         return view('admin.category',compact('data'));
     }
-
+  
     public function add_category(Request $request){
        $data = new Category;
        $data->category_name=$request->categroy;
@@ -84,4 +84,6 @@ class AdminController extends Controller
 
       return redirect()->back()->with('message','Product updated Successfuly');;
     }
+
+   
 }
