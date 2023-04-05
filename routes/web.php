@@ -28,7 +28,7 @@ Route::middleware([
 });
 
 Route::get('/redirect',[HomeController::class,'redirect']);
-
+Route::get('/order',[AdminController::class,'order']);
 Route::get('/view_category',[AdminController::class,'view_category']);
 Route::post('/add_category',[AdminController::class,'add_category']);
 
@@ -42,6 +42,7 @@ Route::get('/delete_product/{id}',[AdminController::class,'delete_product']);
 Route::get('/update_product/{id}',[AdminController::class,'update_product']);
 
 Route::post('/edit_product/{id}',[AdminController::class,'edit_product']);
+
 
 Route::get('/product_details/{id}',[HomeController::class,'product_details']);
 Route::post('/add_cart/{id}',[HomeController::class,'add_cart']);

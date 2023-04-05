@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\product;
+use App\Models\Order;
 class AdminController extends Controller
 {
     public function view_category(){
         $data=Category::all();
         return view('admin.category',compact('data'));
     }
-  
+
     public function add_category(Request $request){
        $data = new Category;
        $data->category_name=$request->categroy;
@@ -84,6 +85,8 @@ class AdminController extends Controller
 
       return redirect()->back()->with('message','Product updated Successfuly');;
     }
-
-   
+    public function order(){
+      $data=Order::all();
+      return view('admin.order',compact('data'));
+  }
 }
