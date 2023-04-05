@@ -33,10 +33,11 @@
                       <th scope="col">Pyament Status</th>
                       <th scope="col">Delivery Status</th>
                       <th scope="col">Image</th>
+                      <th scope="col">Delivered</th>
                     </tr>
                   </thead>
                   <tbody>
-                      @foreach ($data as $data)
+                      @foreach ($Orders as $data)
                     <tr>
                       <td>{{ $data->name }}</td>
                       <td>{{ $data->email }}</td>
@@ -47,11 +48,22 @@
                       <td>{{ $data->price }}</td>
                       <td>{{ $data->payment_status }}</td>
                       <td>{{ $data->delivery_status }}</td>
-                      <td ><img width="250px" height="500px"  src="/product/{{ $data->image }}" alt="" class="rounded mx-auto d-block"></td>
+                      <td ><img style="height: 60px; width:60px;"  src="/product/{{ $data->image }}" alt="" class="rounded mx-auto d-block"></td>
+                       <td>
+                        @if ($data->delivery_status=='processing')
+                        <a onclick="return confirm('Are You Sure this product is Deliverd !!!')" href="{{ url('delivered',$data->id) }}"class="btn btn-primary">Delivered</a>
+                       @else
+                       <p style="color:blue">Delivered</p>
+                        @endif
+                      </td>
                     </tr>
                     @endforeach
                   </tbody>
+                 
                 </table>
+                <br>
+                <br>
+                  {!!$Orders->withQueryString()->links('pagination::bootstrap-5') !!}
                 
           </div>
       </div>

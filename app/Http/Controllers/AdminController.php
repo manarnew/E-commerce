@@ -86,7 +86,17 @@ class AdminController extends Controller
       return redirect()->back()->with('message','Product updated Successfuly');;
     }
     public function order(){
-      $data=Order::all();
-      return view('admin.order',compact('data'));
+      $Orders=Order::paginate(20);
+      return view('admin.order',compact('Orders'));
   }
+
+  public function delivered($id){
+    $order=Order::find($id);
+    $order->delivery_status='delivered';
+    $order->payment_status='Paid';
+    $order->save();
+
+    return redirect()->back();
+    
+}
 }
