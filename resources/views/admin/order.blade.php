@@ -34,6 +34,7 @@
                       <th scope="col">Delivery Status</th>
                       <th scope="col">Image</th>
                       <th scope="col">Delivered</th>
+                      <th scope="col">Print PDF</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -55,6 +56,9 @@
                        @else
                        <p style="color:blue">Delivered</p>
                         @endif
+                      </td>
+                      <td>
+                        <a href="{{ url('print_pdf',$data->id) }}"class="btn btn-secondary">Print PDF</a>
                       </td>
                     </tr>
                     @endforeach
