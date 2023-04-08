@@ -27,7 +27,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/redirect',[HomeController::class,'redirect']);
+Route::get('/redirect',[HomeController::class,'redirect'])->middleware('auth','verified');
 Route::get('/view_category',[AdminController::class,'view_category']);
 Route::post('/add_category',[AdminController::class,'add_category']);
 
@@ -44,6 +44,19 @@ Route::post('/edit_product/{id}',[AdminController::class,'edit_product']);
 Route::get('/order',[AdminController::class,'order']);
 Route::get('/delivered/{id}',[AdminController::class,'delivered']);
 Route::get('/print_pdf/{id}',[AdminController::class,'print_pdf']);
+Route::get('/order_search',[AdminController::class,'order_search']);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 Route::get('/product_details/{id}',[HomeController::class,'product_details']);
@@ -53,3 +66,5 @@ Route::get('/remove_cart/{id}',[HomeController::class,'remove_cart']);
 
 
 Route::get('/cash_order',[HomeController::class,'cash_order']);
+Route::get('/show_order',[HomeController::class,'show_order']);
+Route::get('/cancel_order/{id}',[HomeController::class,'cancel_order']);

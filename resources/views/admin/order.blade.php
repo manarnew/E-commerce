@@ -20,6 +20,13 @@
                {{ session()->get('message') }}
             </div>
         @endif
+        <div style="text-align: center;padding-bottom:20px;color:black">
+          <form action="{{ url('order_search') }}"method="get">
+            @csrf
+            <input type="text" name="search" placeholder="Search for order">
+             <input type="submit" value="Search" class="btn btn-outline-primary">
+          </form>
+        </div>
             <table class="table">
                   <thead class="thead-dark">
                     <tr>
@@ -38,7 +45,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                      @foreach ($Orders as $data)
+                      @forelse ($Orders as $data)
                     <tr>
                       <td>{{ $data->name }}</td>
                       <td>{{ $data->email }}</td>
@@ -61,14 +68,19 @@
                         <a href="{{ url('print_pdf',$data->id) }}"class="btn btn-secondary">Print PDF</a>
                       </td>
                     </tr>
-                    @endforeach
+                    @empty
+                     <td colspan="100">
+                      <h1 style="text-align: center;" class="alert alert-danger">  No Data Found </h1>
+                    </td>
+                    @endforelse
                   </tbody>
                  
                 </table>
                 <br>
                 <br>
+                @if($Orders instanceof \Illuminate\Pagination\LengthAwarePaginator )
                   {!!$Orders->withQueryString()->links('pagination::bootstrap-5') !!}
-                
+                @endif
           </div>
       </div>
     <!-- container-scroller -->

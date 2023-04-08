@@ -106,4 +106,13 @@ public function print_pdf($id){
 
   return $pdf->download('Order_Details.pdf');
 }
+ public function order_search(Request $request){
+   $searchText=$request->search;
+   $Orders=Order::where('name','LIKE',"%$searchText%")->orWhere
+   ('phone','LIKE',"%$searchText%")
+   ->orWhere
+   ('product_title','LIKE',"%$searchText%")
+   ->get();
+   return view('admin.order',compact('Orders'));
+ }
 }
