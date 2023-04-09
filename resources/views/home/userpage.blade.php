@@ -41,7 +41,58 @@
       <!-- product section -->
      @include('home.product')
       <!-- end product section -->
+      <!-- comment and reply system start here -->
 
+      <div style=" text-align:center;paddding-bottom: 30px;">
+         <h1 style="font-size: 30px; text-align:center;paddding-top:20px">Comments</h1>
+         <form action="{{ url('add_comment') }}" method="post">
+            @csrf
+            <textarea style="height:50px;width:600px;"
+            placeholder="Comment something here" name="comment"></textarea>
+           <br>
+           <input type="submit"class="btn btn-primary" value="Comment">
+         </form>
+      </div>
+      <br>
+      <div style="padding-left: 20%">
+          <h1 style="font-size: 20px;padding-bottom:20px;">All Comments</h1>
+          @foreach ($comment as $comment)
+          <div>
+            <b>{{ $comment->name }}</b>
+            <p>{{ $comment->comment }}</p>
+
+            <a href="javascript::void(0)" onclick="reply(this)"
+            data-Commentid="{{ $comment->id }}"> Reply </a>
+           
+            @foreach ($Reply as $rep)
+            <div style="padding-left: 3%;padding-bottom:10px;">
+               @if ($rep->comment_id==$comment->id)
+               <b>{{ $rep->name }}</b>
+               <p>{{ $rep->reply }}</p>
+               <a href="javascript::void(0)" onclick="reply(this)"
+                data-Commentid="{{ $comment->id }}"> Reply </a>
+               @endif
+            </div>
+            @endforeach
+           
+          </div>
+          @endforeach
+        </div>
+          <div style="display: none" class="replyDiv">
+            <form action="{{ url('add_reply') }}" method="post">
+               @csrf
+            <input type="hidden"id="commentId" name="commentId">
+            <textarea style="height:100px;width:500px;"
+            placeholder="Comment something here"name="reply"></textarea>
+           <br>
+           <button type="submit"class="btn btn-primary">Reply</button>
+            <a href="javascript::void(0)" class="btn" onclick="reply_close(this)">
+               Close
+            </a>
+         </form>
+          </div>
+         </div>
+      <!-- comment and reply system end here -->
       <!-- subscribe section -->
      @include('home.subscribe')
       <!-- end subscribe section -->
@@ -58,6 +109,28 @@
          
          </p>
       </div>
+
+      <script>
+         function reply(caller){
+            document.getElementById('commentId').value=$(caller).attr(
+               'data-Commentid');
+            $('.replyDiv').insertAfter($(caller));
+            $('.replyDiv').show();
+         }
+         function reply_close(caller){
+            $('.replyDiv').hide();
+         }
+      </script>
+         <script>
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                var scrollpos = localStorage.getItem('scrollpos');
+                if (scrollpos) window.scrollTo(0, scrollpos);
+            });
+    
+            window.onbeforeunload = function(e) {
+                localStorage.setItem('scrollpos', window.scrollY);
+            };
+        </script>
       <!-- jQery -->
       <script src="home/js/jquery-3.4.1.min.js"></script>
       <!-- popper js -->
