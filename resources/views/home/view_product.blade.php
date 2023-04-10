@@ -6,7 +6,7 @@
           </h2>
           <br><br>
           <div>
-            <form action="{{ url('search') }}" method="get">
+            <form action="{{ url('search_product') }}" method="get">
                @csrf
                <input style="width:500px;" type="text" name="search" placeholder="Search for something">
                <input type="submit" value="search">

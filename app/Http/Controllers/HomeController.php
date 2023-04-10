@@ -52,28 +52,48 @@ public function add_cart(Request $request ,$id)
     if(Auth::id()){
         $user=Auth::user();
         $product=product::find($id);
-        $cart=new cart;
-         
-        $cart->name=$user->name;
-        $cart->email=$user->email;
-        $cart->phone=$user->phone;
-        $cart->address=$user->address;
-        $cart->user_id=$user->id;
+        $userid = $user->id;
+         $product_exist_id=Cart::where('product_id','=',$id)->
+         where('user_id','=',$userid)->get('id')->first();
 
-        $cart->product_title=$product->title;
-        if($product->discount_price!=null ){
-            $cart->price=$product->discount_price * $request->quantity;
-        }else{
-            $cart->price=$product->price * $request->quantity;
-        }
-        $cart->image=$product->image;
-        $cart->product_id=$product->id;
+         if($product_exist_id){
+            $cart=cart::find($product_exist_id)->first();
+            $quantity=$cart->quantity;
+            $cart->quantity=$quantity + $request->quantity;
+            if($product->discount_price!=null ){
+                $cart->price=$product->discount_price * $cart->quantity;
+            }else{
+                $cart->price=$product->price * $cart->quantity;
+            }
+            $cart->save();
+            return redirect()->back()->with('message','Product Added Successfully');
+         }else{
+            $cart=new cart;
 
-        $cart->quantity=$request->quantity;
+            $cart->name=$user->name;
+            $cart->email=$user->email;
+            $cart->phone=$user->phone;
+            $cart->address=$user->address;
+            $cart->user_id=$user->id;
+    
+            $cart->product_title=$product->title;
+            if($product->discount_price!=null ){
+                $cart->price=$product->discount_price * $request->quantity;
+            }else{
+                $cart->price=$product->price * $request->quantity;
+            }
+            $cart->image=$product->image;
+            $cart->product_id=$product->id;
+    
+            $cart->quantity=$request->quantity;
+    
+            $cart->save();
+    
+            return redirect()->back()->with('message','Product Added Successfully');
+         }
 
-        $cart->save();
 
-        return redirect()->back();
+       
 
     }else{
         return redirect('login');
@@ -180,4 +200,36 @@ public function add_reply(Request $request){
     }
     
 }
+public function search(Request $request){
+    $searchText=$request->search;
+    $products=product::where('title','LIKE',"%$searchText%")->orWhere
+    ('category','LIKE',"%$searchText%")
+    ->orWhere
+    ('price','LIKE',"%$searchText%")
+    ->get();
+    $comment=Comment::orderby('id','desc')->paginate(10);
+    $Reply=Reply::all();
+    return view('home.userpage',compact('products','comment','Reply'));
+  }
+
+  public function products(){
+
+    $products=product::paginate(10);
+    $comment=Comment::orderby('id','desc')->get();
+    $Reply=Reply::all();
+
+    return view('home.all_product',compact('products','comment','Reply')); 
+  }
+  public function search_product(Request $request){
+    $searchText=$request->search;
+    $products=product::where('title','LIKE',"%$searchText%")->orWhere
+    ('category','LIKE',"%$searchText%")
+    ->orWhere
+    ('price','LIKE',"%$searchText%")
+    ->get();
+    $comment=Comment::orderby('id','desc')->paginate(10);
+    $Reply=Reply::all();
+    return view('home.all_product',compact('products','comment','Reply'));
+  }
+
 }
