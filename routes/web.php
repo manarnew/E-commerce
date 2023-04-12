@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\controllers\HomeController;
 use App\Http\controllers\AdminController;
+use App\Http\Middleware\ifAdminMiddleware;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,31 +28,48 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/redirect',[HomeController::class,'redirect'])->middleware('auth','verified');
-Route::get('/view_category',[AdminController::class,'view_category']);
-Route::post('/add_category',[AdminController::class,'add_category']);
 
-Route::get('/delete_category/{id}',[AdminController::class,'delete_category']);
+// Admin route
+route::controller(AdminController::class)->group(function(){
+ route::middleware(['auth',ifAdminMiddleware::class])->group(function(){
+    Route::get('/view_product','view_product');
+    Route::post('/add_product','add_product');
+    Route::get('/show_product','show_product');
+    Route::get('/delete_product/{id}','delete_product');
+    Route::get('/update_product/{id}','update_product');
+    
+    Route::post('/edit_product/{id}','edit_product');
+    Route::get('/order','order');
+    Route::get('/delivered/{id}','delivered');
+    Route::get('/print_pdf/{id}','print_pdf');
+    Route::get('/order_search','order_search');
+    Route::get('/view_category','view_category');
+    Route::post('/add_category','add_category');
 
-
-Route::get('/view_product',[AdminController::class,'view_product']);
-Route::post('/add_product',[AdminController::class,'add_product']);
-Route::get('/show_product',[AdminController::class,'show_product']);
-Route::get('/delete_product/{id}',[AdminController::class,'delete_product']);
-Route::get('/update_product/{id}',[AdminController::class,'update_product']);
-
-Route::post('/edit_product/{id}',[AdminController::class,'edit_product']);
-Route::get('/order',[AdminController::class,'order']);
-Route::get('/delivered/{id}',[AdminController::class,'delivered']);
-Route::get('/print_pdf/{id}',[AdminController::class,'print_pdf']);
-Route::get('/order_search',[AdminController::class,'order_search']);
-
-
-
-
-
+    Route::get('/delete_category/{id}','delete_category');
+});
+});
 
 
+//user route
+route::controller(HomeController::class)->group(function(){
+    route::middleware(['auth','verified'])->group(function(){
+    Route::get('/redirect','redirect')->middleware('auth','verified');
+    Route::post('/add_cart/{id}','add_cart');
+    Route::get('/show_cart','show_cart');
+    Route::get('/remove_cart/{id}','remove_cart');
+    Route::get('/cash_order','cash_order');
+    Route::get('/show_order','show_order');
+    Route::get('/cancel_order/{id}','cancel_order');
+    Route::post('/add_comment','add_comment');
+    Route::post('/add_reply','add_reply');
+});
+    Route::get('/product_details/{id}','product_details');
+    Route::get('/search','search');
+    Route::get('/products','products');
+    Route::get('/search_product','search_product');
+    
+});
 
 
 
@@ -59,17 +77,7 @@ Route::get('/order_search',[AdminController::class,'order_search']);
 
 
 
-Route::get('/product_details/{id}',[HomeController::class,'product_details']);
-Route::post('/add_cart/{id}',[HomeController::class,'add_cart']);
-Route::get('/show_cart',[HomeController::class,'show_cart']);
-Route::get('/remove_cart/{id}',[HomeController::class,'remove_cart']);
 
 
-Route::get('/cash_order',[HomeController::class,'cash_order']);
-Route::get('/show_order',[HomeController::class,'show_order']);
-Route::get('/cancel_order/{id}',[HomeController::class,'cancel_order']);
-Route::post('/add_comment',[HomeController::class,'add_comment']);
-Route::post('/add_reply',[HomeController::class,'add_reply']);
-Route::get('/search',[HomeController::class,'search']);
-Route::get('/products',[HomeController::class,'products']);
-Route::get('/search_product',[HomeController::class,'search_product']);
+
+

@@ -10,6 +10,7 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Comment;
 use App\Models\Reply;
+use RealRashid\SweetAlert\Facades\Alert;
 class HomeController extends Controller
 {
     public function index(){
@@ -66,30 +67,25 @@ public function add_cart(Request $request ,$id)
                 $cart->price=$product->price * $cart->quantity;
             }
             $cart->save();
-            return redirect()->back()->with('message','Product Added Successfully');
+            Alert::success('Product Added Successfully','We have added product to the cart');
+            return redirect()->back();
          }else{
             $cart=new cart;
 
-            $cart->name=$user->name;
-            $cart->email=$user->email;
-            $cart->phone=$user->phone;
-            $cart->address=$user->address;
             $cart->user_id=$user->id;
     
-            $cart->product_title=$product->title;
             if($product->discount_price!=null ){
                 $cart->price=$product->discount_price * $request->quantity;
             }else{
                 $cart->price=$product->price * $request->quantity;
             }
-            $cart->image=$product->image;
             $cart->product_id=$product->id;
-    
             $cart->quantity=$request->quantity;
     
             $cart->save();
+            Alert::success('Product Added Successfully','We have added product to the cart');
     
-            return redirect()->back()->with('message','Product Added Successfully');
+            return redirect()->back();
          }
 
 
@@ -122,17 +118,10 @@ public function cash_order(){
 
     foreach($data as $data){
         $order=new Order;
-        $order->name=$data->name;
-        $order->email=$data->email;
-        $order->phone=$data->phone;
-        $order->address=$data->address;
         $order->user_id=$data->user_id;
 
         
-        $order->product_title=$data->product_title;
         $order->product_id=$data->product_id;
-        $order->price=$data->price;
-        $order->image=$data->image;
         $order->quantity=$data->quantity;
 
         $order->payment_status='cash on delivery';
@@ -172,7 +161,6 @@ public function add_comment(Request $request){
         $user=Auth::user();
         $Comment=new Comment();
          
-        $Comment->name=$user->name;
         $Comment->user_id=$user->id;
         $Comment->comment=$request->comment;
         $Comment->save();
@@ -188,7 +176,6 @@ public function add_reply(Request $request){
         $user=Auth::user();
         $Reply=new Reply();
          
-        $Reply->name=$user->name;
         $Reply->user_id=$user->id;
         $Reply->comment_id=$request->commentId;
         $Reply->reply=$request->reply;
@@ -202,8 +189,7 @@ public function add_reply(Request $request){
 }
 public function search(Request $request){
     $searchText=$request->search;
-    $products=product::where('title','LIKE',"%$searchText%")->orWhere
-    ('category','LIKE',"%$searchText%")
+    $products=product::where('title','LIKE',"%$searchText%")
     ->orWhere
     ('price','LIKE',"%$searchText%")
     ->get();
@@ -222,8 +208,7 @@ public function search(Request $request){
   }
   public function search_product(Request $request){
     $searchText=$request->search;
-    $products=product::where('title','LIKE',"%$searchText%")->orWhere
-    ('category','LIKE',"%$searchText%")
+    $products=product::where('title','LIKE',"%$searchText%")
     ->orWhere
     ('price','LIKE',"%$searchText%")
     ->get();

@@ -68,9 +68,9 @@
                        <div class="form-group">
                         <label for="">Product Category</label>
                         <select required class="form-control input_color" name="category" id="Category"  class="input_color">
-                            <option value="{{ $product->category }}">{{ $product->category }}</option>
+                            <option value="{{ $product->id }}">{{ $product->category->category_name }}</option>
                             @foreach ($categroies as $category )
-                            <option value="{{ $category->category_name }}">{{ $category->category_name }}</option>
+                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
                             @endforeach
                         </select>
                        </div>

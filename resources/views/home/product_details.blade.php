@@ -60,7 +60,7 @@
                 {{$product->price}}
               </h6>
               @endif
-              <h6>Product Category : {{$product->category}}</h6>
+              <h6>Product Category : {{$product->category->name}}</h6>
               <h6>Product Datails : {{$product->description}}</h6>
               <h6>Available Quantity : {{$product->qunatity}}</h6>
               <br>

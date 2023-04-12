@@ -40,7 +40,7 @@ class AdminController extends Controller
       $product->price=$request->price;
       $product->qunatity=$request->quantity;
       $product->discount_price=$request->dis_price;
-      $product->category=$request->category;
+      $product->categoryId=$request->category;
 
       $image=$request->image;
       $imagename=time().'.'.$image->getClientOriginalExtension();
@@ -74,7 +74,7 @@ class AdminController extends Controller
       $product->price=$request->price;
       $product->qunatity=$request->quantity;
       $product->discount_price=$request->dis_price;
-      $product->category=$request->category;
+      $product->categoryId=$request->category;
 
       $image=$request->image;
       if($image){

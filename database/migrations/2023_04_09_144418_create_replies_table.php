@@ -15,10 +15,9 @@ return new class extends Migration
     {
         Schema::create('replies', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('comment_id')->nullable();
-            $table->string('reply')->nullable();
-            $table->string('user_id')->nullable();
+            $table->integer('comment_id');
+            $table->string('reply');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }

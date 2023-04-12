@@ -55,10 +55,10 @@
                 <?php $totlPrice = 0; ?>
                 @foreach ($cart as $data)
               <tr>
-                <td>{{ $data->product_title }}</td>
+                <td>{{ $data->product->title }}</td>
                 <td>{{ $data->quantity }}</td>
-                <td>{{ $data->price }}</td>
-                <td ><img width="140px" height="140px"  src="/product/{{ $data->image }}" alt="" class="rounded mx-auto d-block"></td>
+                <td>{{ $data->product->price }}</td>
+                <td ><img width="140px" height="140px"  src="/product/{{ $data->product->image }}" alt="" class="rounded mx-auto d-block"></td>
                  <td>
                 <a onclick="return confirm('Are sure to Remove This Product')"  href="{{ url('remove_cart',$data->id) }}"class="btn btn-danger">Remove</a>
                 </td>

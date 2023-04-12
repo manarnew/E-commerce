@@ -59,7 +59,7 @@
                         <td>{{ $data->title }}</td>
                         <td>{{ $data->description }}</td>
                         <td>{{ $data->qunatity }}</td>
-                        <td>{{ $data->category }}</td>
+                        <td>{{ $data->category->category_name }}</td>
                         <td>{{ $data->price }}</td>
                         <td>{{ $data->discount_price }}</td>
                         <td ><img width="250px" height="500px"  src="/product/{{ $data->image }}" alt="" class="rounded mx-auto d-block"></td>

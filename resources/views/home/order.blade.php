@@ -44,12 +44,12 @@
             <tbody>
                 @forelse ($Orders as $data)
               <tr>
-                <td>{{ $data->product_title }}</td>
+                <td>{{ $data->product->title }}</td>
                 <td>{{ $data->quantity }}</td>
-                <td>{{ $data->price }}</td>
+                <td>{{ $data->product->price }}</td>
                 <td>{{ $data->payment_status }}</td>
                 <td>{{ $data->delivery_status }}</td>
-                <td ><img style="height: 60px; width:60px;"  src="/product/{{ $data->image }}" alt="" class="rounded mx-auto d-block"></td>
+                <td ><img style="height: 60px; width:60px;"  src="/product/{{ $data->product->image }}" alt="" class="rounded mx-auto d-block"></td>
                 <td>
                     @if($data->delivery_status=='processing')
                   <a onclick="return confirm(' are sure you want to cancel the order')"

@@ -25,6 +25,7 @@
     <link href="{{asset('home/css/responsive.css')}}" rel="stylesheet" />
    </head>
    <body>
+      @include('sweetalert::alert')
       <div class="hero_area">
          <!-- header section strats -->
       @include('home.header')
@@ -61,7 +62,7 @@
           <h1 style="font-size: 20px;padding-bottom:20px;">All Comments</h1>
           @foreach ($comment as $comment)
           <div>
-            <b>{{ $comment->name }}</b>
+            <b>{{ $comment->user->name }}</b>
             <p>{{ $comment->comment }}</p>
 
             <a href="javascript::void(0)" onclick="reply(this)"
@@ -70,7 +71,7 @@
             @foreach ($Reply as $rep)
             <div style="padding-left: 3%;padding-bottom:10px;">
                @if ($rep->comment_id==$comment->id)
-               <b>{{ $rep->name }}</b>
+               <b>{{ $rep->user->name }}</b>
                <p>{{ $rep->reply }}</p>
                <a href="javascript::void(0)" onclick="reply(this)"
                 data-Commentid="{{ $comment->id }}"> Reply </a>
