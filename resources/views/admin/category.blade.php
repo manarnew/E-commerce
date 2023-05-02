@@ -42,6 +42,10 @@
                         <input type="text" name="categroy" placeholder="Write category name"
                         class="input_color">
                         <input type="submit" value="Add Category"  class="btn btn-primary">
+                      <br>
+                        @error('categroy')
+                        <span class="text-danger">{{ $message }}</span>
+                      @enderror
                     </form>
                 </div>
                 <table class="table">

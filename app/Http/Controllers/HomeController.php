@@ -11,6 +11,8 @@ use App\Models\Order;
 use App\Models\Comment;
 use App\Models\Reply;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Http\Requests\commentsRequest;
+
 class HomeController extends Controller
 {
     public function index(){
@@ -48,91 +50,95 @@ public function product_details($id)
     $product=product::find($id);
     return view('home.product_details',compact('product'));
 }
-public function add_cart(Request $request ,$id)
+public function cartList()
 {
-    if(Auth::id()){
-        $user=Auth::user();
-        $product=product::find($id);
-        $userid = $user->id;
-         $product_exist_id=Cart::where('product_id','=',$id)->
-         where('user_id','=',$userid)->get('id')->first();
-
-         if($product_exist_id){
-            $cart=cart::find($product_exist_id)->first();
-            $quantity=$cart->quantity;
-            $cart->quantity=$quantity + $request->quantity;
-            if($product->discount_price!=null ){
-                $cart->price=$product->discount_price * $cart->quantity;
-            }else{
-                $cart->price=$product->price * $cart->quantity;
-            }
-            $cart->save();
-            Alert::success('Product Added Successfully','We have added product to the cart');
-            return redirect()->back();
-         }else{
-            $cart=new cart;
-
-            $cart->user_id=$user->id;
-    
-            if($product->discount_price!=null ){
-                $cart->price=$product->discount_price * $request->quantity;
-            }else{
-                $cart->price=$product->price * $request->quantity;
-            }
-            $cart->product_id=$product->id;
-            $cart->quantity=$request->quantity;
-    
-            $cart->save();
-            Alert::success('Product Added Successfully','We have added product to the cart');
-    
-            return redirect()->back();
-         }
+    $cartItems = \Cart::getContent();
+    $products=product::paginate(10);
+    $comment=Comment::orderby('id','desc')->get();
+    $Reply=Reply::all();
+    // dd($cartItems);
+    return view('home.cart', compact('cartItems','comment','Reply'));
+}
 
 
-       
+public function addToCart(Request $request)
+{
+    \Cart::add([
+        'id' => $request->id,
+        'name' => $request->name,
+        'price' => $request->price,
+        'quantity' => $request->quantity,
+        'attributes' => array(
+            'image' => 'product/'.$request->image,
+        )
+    ]);
+    session()->flash('success', 'Product is Added to Cart Successfully !');
 
-    }else{
-        return redirect('login');
+    return redirect()->route('cart.list');
+}
+
+public function updateCart(Request $request)
+{
+    \Cart::update(
+        $request->id,
+        [
+            'quantity' => [
+                'relative' => false,
+                'value' => $request->quantity
+            ],
+        ]
+    );
+
+    session()->flash('success', 'Item Cart is Updated Successfully !');
+
+    return redirect()->route('cart.list');
+}
+
+public function removeCart(Request $request)
+{
+    \Cart::remove($request->id);
+    session()->flash('success', 'Item Cart Remove Successfully !');
+
+    return redirect()->route('cart.list');
+}
+
+public function clearAllCart()
+{
+    \Cart::clear();
+
+    session()->flash('success', 'All Item Cart Clear Successfully !');
+
+    return redirect()->route('cart.list');
+}
+public function deleteProduct(Request $request)
+{
+    if($request->id) {
+        $cart = session()->get('cart');
+        if(isset($cart[$request->id])) {
+            unset($cart[$request->id]);
+            session()->put('cart', $cart);
+        }
+        session()->flash('success', 'Book successfully deleted.');
     }
 }
-public function show_cart(){
-    if(Auth::id()){
-        $id=Auth::user()->id;
-        $cart=Cart::where('user_id','=',$id)->get();
-        return view("home.showcart",compact('cart'));
-    }else
-    {
-        return redirect('login');
-    }
-    
-}
-public function remove_cart($id){
-    $cart=Cart::find($id);
-    $cart->delete();
 
-    return redirect()->back();
-}
 public function cash_order(){
     $userid=Auth::user()->id;
-    $data=Cart::where('user_id','=',$userid)->get();
+    $data = \Cart::getContent();
 
     foreach($data as $data){
         $order=new Order;
-        $order->user_id=$data->user_id;
+        $order->user_id= $userid;
 
         
-        $order->product_id=$data->product_id;
+        $order->product_id=$data->id;
         $order->quantity=$data->quantity;
 
         $order->payment_status='cash on delivery';
         $order->delivery_status='processing';
 
         $order->save();
-
-
-        $cart_id=$data->id;
-        $cart=Cart::find($cart_id);
-        $cart->delete();
+        \Cart::clear();
     }
       return redirect()->back()->with('message','We have Received Your Order . 
       We will connect with you soon ...');   
@@ -156,7 +162,7 @@ public function cancel_order($id){
         return redirect()->back();
     
 }
-public function add_comment(Request $request){
+public function add_comment(commentsRequest $request){
     if(Auth::id()){
         $user=Auth::user();
         $Comment=new Comment();

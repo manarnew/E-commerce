@@ -197,7 +197,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
-
+        Darryldecode\Cart\CartServiceProvider::class
     ],
 
     /*
@@ -213,6 +213,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'PDF'=>Barryvdh\DomPDF\Facade::class,
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

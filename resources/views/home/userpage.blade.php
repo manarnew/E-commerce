@@ -43,7 +43,11 @@
       <!-- end arrival section -->
       
       <!-- product section -->
-     @include('home.product')
+@include('home.product')     
+</div>
+
+</section>
+
       <!-- end product section -->
       <!-- comment and reply system start here -->
 
@@ -55,6 +59,9 @@
             placeholder="Comment something here" name="comment"></textarea>
            <br>
            <input type="submit"class="btn btn-primary" value="Comment">
+           @error('comment')
+           <span class="text-danger">{{ $message }}</span>
+         @enderror
          </form>
       </div>
       <br>
@@ -106,35 +113,12 @@
       <!-- footer start -->
       @include('home.footer')
       <!-- footer end -->
+     
+
       <div class="cpy_">
-         <p class="mx-auto">© 2021 All Rights Reserved By <a href="https://html.design/">Free Html Templates</a><br>
-         
-            Distributed By <a href="https://themewagon.com/" target="_blank">ThemeWagon</a>
-         
+         <p class="mx-auto">© 2023 All Rights Reserved By <a href="#"> Manar Omer</a><br>
          </p>
       </div>
-
-      <script>
-         function reply(caller){
-            document.getElementById('commentId').value=$(caller).attr(
-               'data-Commentid');
-            $('.replyDiv').insertAfter($(caller));
-            $('.replyDiv').show();
-         }
-         function reply_close(caller){
-            $('.replyDiv').hide();
-         }
-      </script>
-         <script>
-            document.addEventListener("DOMContentLoaded", function(event) { 
-                var scrollpos = localStorage.getItem('scrollpos');
-                if (scrollpos) window.scrollTo(0, scrollpos);
-            });
-    
-            window.onbeforeunload = function(e) {
-                localStorage.setItem('scrollpos', window.scrollY);
-            };
-        </script>
       <!-- jQery -->
       <script src="home/js/jquery-3.4.1.min.js"></script>
       <!-- popper js -->

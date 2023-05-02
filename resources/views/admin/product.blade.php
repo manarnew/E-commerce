@@ -41,24 +41,36 @@
                         @csrf
                      <div class="form-group">
                         <label for="">Product title</label>
-                        <input required class="form-control" type="text" name="title" placeholder="Write category name"
+                        <input  class="form-control" type="text" name="title" placeholder="Write Product name"
                         class="input_color">
+                        @error('title')
+                        <span class="text-danger">{{ $message }}</span>
+                      @enderror
                        </div>
                     
                        <div class="form-group">
                         <label for="">Product Description</label>
-                        <input required class="form-control" type="text" name="description" placeholder="Write a Description "
+                        <input  class="form-control" type="text" name="description" placeholder="Write a Description "
                         class="input_color">
+                        @error('description')
+                        <span class="text-danger">{{ $message }}</span>
+                      @enderror
                        </div>
                        <div class="form-group">
                         <label for="">Product price</label>
-                        <input required class="form-control" type="number" name="price" placeholder="Write a price"
+                        <input  class="form-control" type="number" name="price" placeholder="Write a price"
                         class="input_color">
+                        @error('price')
+                        <span class="text-danger">{{ $message }}</span>
+                      @enderror
                        </div>
                        <div class="form-group">
                         <label for="">Product Quantity</label>
-                        <input required class="form-control" type="number"min="0" name="quantity" placeholder="Write a Quantity"
+                        <input  class="form-control" type="number"min="0" name="quantity" placeholder="Write a Quantity"
                         class="input_color">
+                        @error('quantity')
+                        <span class="text-danger">{{ $message }}</span>
+                      @enderror
                        </div>
                        <div class="form-group">
                         <label for="">Discunt price </label>
@@ -67,16 +79,19 @@
                        </div>
                        <div class="form-group">
                         <label for="">Product Category</label>
-                        <select required class="form-control" name="category" id="Category"  class="input_color">
+                        <select  class="form-control" name="category" id="Category"  class="input_color">
                             <option value="">Add a Category here</option>
                             @foreach ($categroies as $category )
                             <option value="{{ $category->id }} ">{{ $category->category_name }}</option>
                             @endforeach
                         </select>
+                        @error('category')
+                        <span class="text-danger">{{ $message }}</span>
+                      @enderror
                        </div>
                        <div class="form-group">
                         <label for="exampleFormControlFile1">Product Image</label>
-                        <input required type="file" class="form-control-file"name="image" id="exampleFormControlFile1">
+                        <input  type="file" class="form-control-file"name="image" id="exampleFormControlFile1">
                       </div>
                        <div class="form-group">
                         <input type="submit" value="Add Product"  class="btn btn-primary">

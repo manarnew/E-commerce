@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\product;
 use App\Models\Order;
 use PDF;
+use App\Http\Requests\categoryRequest;
+use App\Http\Requests\productRequest;
 class AdminController extends Controller
 {
     public function view_category(){
@@ -14,7 +16,7 @@ class AdminController extends Controller
         return view('admin.category',compact('data'));
     }
 
-    public function add_category(Request $request){
+    public function add_category(categoryRequest $request){
        $data = new Category;
        $data->category_name=$request->categroy;
        $data->save();
@@ -33,7 +35,7 @@ class AdminController extends Controller
       $categroies=Category::all();
       return view('admin.product',compact('categroies'));
     }
-    public function add_product(Request $request){
+    public function add_product(productRequest $request){
       $product=new product;
       $product->title=$request->title;
       $product->description=$request->description;
@@ -67,7 +69,7 @@ class AdminController extends Controller
       $product = product::find($id);
       return view('admin.update_product',compact('product','categroies'));
     }
-    public function edit_product(Request $request,$id){
+    public function edit_product(productRequest $request,$id){
       $product=product::find($id);
       $product->title=$request->title;
       $product->description=$request->description;
